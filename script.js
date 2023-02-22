@@ -83,7 +83,6 @@ class App {
       })
       .then(
         function (data) {
-          alert(JSON.stringify(data));
           this.#country = data[0];
           this.#zoomLevel = 5;
           const area = this.#country.area;
