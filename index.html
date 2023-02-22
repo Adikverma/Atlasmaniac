@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="logo.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Leaflet Library -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
+
+    <script defer src="script.js"></script>
+    <title>mapty // Atlas</title>
+  </head>
+  <body>
+    <div class="sidebar">
+      <img src="logo.png" alt="Logo" class="logo" />
+
+      <form class="form">
+        <input type="text" class="form__input" placeholder="Enter Country" />
+        <button class="form__btn btn1" type="submit">Search</button>
+        <button class="form__btn btn2" type="reset">Clear</button>
+      </form>
+
+      <!-- Coutry Template -->
+      <article class="country">
+        <!-- <img class="country__img" src="" />
+        <div class="country__data">
+          <h3 class="country__name">COUNTRY</h3>
+          <h4 class="country__region">REGION</h4>
+          <div class="country__data__list">
+            <p class="country__row"><span>👫</span>POP people</p>
+            <p class="country__row"><span>🗣️</span>LANG</p>
+            <p class="country__row"><span>💰</span>CUR</p>
+            <p class="country__row"><span>👨‍👩‍👧‍👦</span>Population</p>
+          </div>
+        </div> -->
+      </article>
+    </div>
+
+    <div id="map"></div>
+  </body>
+</html>
