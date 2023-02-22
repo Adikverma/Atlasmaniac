@@ -13,6 +13,10 @@ class App {
   #countrySize = 3287590;
   #country;
   #currentMarker;
+  #list = [];
+  #latDefault = 19;
+  #lngDefault = 79;
+  #access = true;
 
   //Event Listeners
   constructor() {
@@ -22,15 +26,22 @@ class App {
 
     btn1.addEventListener("click", this._newCountry.bind(this));
 
-    btn2.addEventListener(
-      "click",
-      function () {
-        this.#country = "";
-        tile.innerHTML = "";
-        tile.style.opacity = 0;
-        if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
-      }.bind(this)
-    );
+    btn2.addEventListener("click", this._goDefaultMap.bind(this));
+  }
+
+  //Go Default
+  _goDefaultMap() {
+    tile.innerHTML = "";
+    this.#zoomLevel = 4;
+
+    this.#country = {
+      latlng: [this.#latDefault, this.#lngDefault],
+      name: {
+        common: "Your Location",
+      },
+    };
+    if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
+    this._focusCountry();
   }
 
   //Loading the Location
@@ -38,18 +49,22 @@ class App {
     if (navigator.geolocation)
       navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), () => {
         alert("Cannot load your location ;(");
-        this._loadMap("not");
+        this.#access = false;
+        this._loadMap();
       });
   }
 
   //Loading the Map
   _loadMap(position) {
-    let latitude = 18;
-    let longitude = 73;
-    if (position !== "not") {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude;
+    let latitude, longitude;
+
+    if (this.#access) {
+      this.#latDefault = position.coords.latitude;
+      this.#lngDefault = position.coords.longitude;
     }
+
+    latitude = this.#latDefault;
+    longitude = this.#lngDefault;
 
     const coords = [latitude, longitude];
     this.#map = L.map("map").setView(coords, this.#zoomLevel);
@@ -60,15 +75,9 @@ class App {
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(this.#map);
 
-    if (position != "not") {
-      this.#country = {
-        latlng: [latitude, longitude],
-        name: {
-          common: "Your Location",
-        },
-      };
-      this._renderCountryMarker();
-    }
+    // if (!this.#access) {
+    //   this._goDefaultMap();
+    // }
   }
 
   //Creating new country and ajax call
@@ -103,7 +112,7 @@ class App {
     //calling : adding the info html of new country
     this._renderCountryInfo();
 
-    //calling : rendering the new marker on the map
+    //calling : rendering the new marker on the map if its now default
     this._renderCountryMarker();
 
     //calling : focusing map on country
