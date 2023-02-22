@@ -73,6 +73,34 @@ body {
   cursor: pointer;
 }
 
+.list_country {
+  max-height: 500px;
+  margin-top: 50px;
+  overflow-y: scroll;
+}
+
+.list_border {
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 7px;
+  margin: 5px;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
+.list_flag {
+  width: 75px;
+  height: 50px;
+  display: inline;
+}
+
+.list_name {
+  display: inline;
+  font: 1em sans-serif;
+  margin: auto 10px;
+  text-align: center;
+}
+
 .country {
   background-color: #fff;
   box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
@@ -81,7 +109,6 @@ body {
   border-radius: 0.7rem;
   margin: auto;
   color: #607586;
-  opacity: 0;
 }
 
 .country__img {
@@ -156,4 +183,8 @@ body {
 
 .popup .leaflet-popup-content-wrapper {
   border-left: 5px solid var(--color-brand--2);
+}
+
+.hidden {
+  display: none;
 }
