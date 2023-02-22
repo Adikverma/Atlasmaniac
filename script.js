@@ -105,7 +105,6 @@ class App {
 
   //render the Marker for the country
   _renderCountryMarker() {
-    console.log(this.#country.latlng);
 
     //removing last marker if exists
     if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
