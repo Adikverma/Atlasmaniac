@@ -77,7 +77,7 @@ body {
   background-color: #fff;
   box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
   font-size: 1.8rem;
-  width: 40rem;
+  width: 35rem;
   border-radius: 0.7rem;
   margin: auto;
   color: #607586;
@@ -85,8 +85,8 @@ body {
 }
 
 .country__img {
-  width: 40rem;
-  height: 25rem;
+  width: 35rem;
+  height: 20rem;
   object-fit: cover;
   background-color: #eee;
   border-top-left-radius: 0.7rem;
@@ -110,7 +110,7 @@ body {
 }
 
 .country__data__list {
-  height: 200px;
+  height: 180px;
   margin: 0;
   padding: 0;
   overflow-y: scroll;
