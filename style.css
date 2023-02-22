@@ -110,7 +110,7 @@ body {
 }
 
 .country__data__list {
-  height: 250px;
+  height: 200px;
   margin: 0;
   padding: 0;
   overflow-y: scroll;
