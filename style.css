@@ -74,8 +74,10 @@ body {
 }
 
 .list_country {
-  max-height: 500px;
   margin-top: 50px;
+  max-height: 500px;
+  list-style: none;
+  overflow-x: hidden;
   overflow-y: scroll;
 }
 
@@ -83,7 +85,7 @@ body {
   border: 2px solid rgb(255, 255, 255);
   border-radius: 10px;
   padding: 7px;
-  margin: 5px;
+  margin-top: 15px;
   font-size: 1.7rem;
   cursor: pointer;
 }
@@ -101,13 +103,6 @@ body {
   text-align: center;
 }
 
-.list_country {
-  list-style: none;
-  height: 77vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
 .list_country::-webkit-scrollbar {
   width: 0;
 }
@@ -118,7 +113,7 @@ body {
   font-size: 1.8rem;
   width: 35rem;
   border-radius: 0.7rem;
-  margin: auto;
+  margin: 0px auto;
   color: #607586;
 }
 
@@ -148,7 +143,7 @@ body {
 }
 
 .country__data__list {
-  height: 180px;
+  height: 200px;
   margin: 0;
   padding: 0;
   overflow-y: scroll;
