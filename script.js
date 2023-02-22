@@ -41,6 +41,7 @@ class App {
       },
     };
     if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
+    if (this.#access) this._renderCountryMarker();
     this._focusCountry();
   }
 
@@ -75,9 +76,7 @@ class App {
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(this.#map);
 
-    // if (!this.#access) {
-    //   this._goDefaultMap();
-    // }
+    this._goDefaultMap();
   }
 
   //Creating new country and ajax call
