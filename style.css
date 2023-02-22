@@ -16,7 +16,7 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 50%;
   box-sizing: border-box;
 }
 
@@ -29,7 +29,7 @@ body {
   overscroll-behavior-y: none;
 
   background-color: #fff;
-  padding: 1.5rem;
+  padding: 1.4rem;
 
   display: flex;
 }
@@ -55,7 +55,7 @@ body {
 }
 
 .form__input {
-  width: 200px;
+  width: 150px;
   font-size: 2rem;
   font-family: monospace;
   padding: 0.5rem 2rem;
