@@ -6,14 +6,15 @@ const input = document.querySelector(".form__input");
 const btn1 = document.querySelector(".btn1");
 const btn2 = document.querySelector(".btn2");
 const tile = document.querySelector(".country");
+const list = document.querySelector(".list_country");
 
 class App {
   #map;
-  #zoomLevel = 4;
-  #countrySize = 3287590;
+  #countries;
   #country;
   #currentMarker;
-  #list = [];
+  #zoomLevel = 4;
+  #countrySize = 3287590;
   #latDefault = 19;
   #lngDefault = 79;
   #access = true;
@@ -27,22 +28,8 @@ class App {
     btn1.addEventListener("click", this._newCountry.bind(this));
 
     btn2.addEventListener("click", this._goDefaultMap.bind(this));
-  }
 
-  //Go Default
-  _goDefaultMap() {
-    tile.innerHTML = "";
-    this.#zoomLevel = 4;
-
-    this.#country = {
-      latlng: [this.#latDefault, this.#lngDefault],
-      name: {
-        common: "Your Location",
-      },
-    };
-    if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
-    if (this.#access) this._renderCountryMarker();
-    this._focusCountry();
+    list.addEventListener("click", this._clickCountry.bind(this));
   }
 
   //Loading the Location
@@ -79,6 +66,55 @@ class App {
     this._goDefaultMap();
   }
 
+  //Go Default
+  _goDefaultMap() {
+    tile.innerHTML = "";
+    list.innerHTML = "";
+
+    this.#zoomLevel = 4;
+
+    this.#country = {
+      latlng: [this.#latDefault, this.#lngDefault],
+      name: {
+        common: "Your Location",
+      },
+    };
+    if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
+    if (this.#access) this._renderCountryMarker();
+    this._focusCountry();
+  }
+
+  //country List
+  _countryList() {
+    tile.innerHTML = "";
+    list.innerHTML = "";
+
+    let html = "";
+    let index = 0;
+    this.#countries.forEach((ele) => {
+      html += `
+        <div class="list_border" data-id="${index++}">
+          <img class ="list_flag" src="${ele.flags.png}" alt="">
+          <h4 class = "list_name">${ele.name?.common}</h4>
+        </div>
+      `;
+      this.#countries[index - 1] = Object.assign({ id: index - 1 }, ele);
+    });
+
+    list.insertAdjacentHTML("afterbegin", html);
+  }
+
+  //selecting the country
+  _clickCountry(e) {
+    const countryEl = e.target.closest(".list_border");
+    if (!countryEl) return;
+
+    this.#country = this.#countries.find(
+      (country) => country.id === +countryEl.dataset.id
+    );
+    this._renderRequest();
+  }
+
   //Creating new country and ajax call
   _newCountry(e) {
     e.preventDefault();
@@ -89,25 +125,26 @@ class App {
           throw new Error(`Country Not Found ${response.status}`);
         return response.json();
       })
-      .then(
-        function (data) {
-          this.#country = data[0];
-          this.#zoomLevel = 5;
-          const area = this.#country.area;
-
-          if (area >= this.#countrySize) {
-            this.#zoomLevel -= area / (this.#countrySize * 2.5);
-          } else {
-            this.#zoomLevel += this.#countrySize / (area * 3.5);
-          }
-
-          this._renderRequest();
-        }.bind(this)
-      )
+      .then((data) => {
+        this.#countries = data;
+        this._countryList();
+      })
       .catch((err) => console.log(err.message));
   }
 
   _renderRequest() {
+    list.innerHTML = "";
+
+    //setting zoom level (area funtion => base area = china)
+    this.#zoomLevel = 5;
+    const area = this.#country.area;
+
+    if (area >= this.#countrySize) {
+      this.#zoomLevel -= area / (this.#countrySize * 2.5);
+    } else {
+      this.#zoomLevel += this.#countrySize / (area * 3.5);
+    }
+
     //calling : adding the info html of new country
     this._renderCountryInfo();
 
@@ -116,6 +153,29 @@ class App {
 
     //calling : focusing map on country
     this._focusCountry();
+  }
+
+  //adding info html to dom
+  _renderCountryInfo() {
+    const current = this.#country;
+
+    let html = `
+        <img class="country__img" src="${current.flags.png}" />
+        <div class="country__data">
+          <h3 class="country__name">${current.name?.common}</h3>
+          <h4 class="country__region">${current.region}</h4>
+          <div class="country__data__list">
+          <p class="country__row"><span>👀</span>Acha API mile tab kardunga</p>
+            <p class="country__row"><span>📌</span>:  ${current.capital}</p>
+            <p class="country__row"><span>🗣️</span>: ${current.languages}</p>
+            <p class="country__row"><span>💰</span>: </p>
+            <p class="country__row"><span>👨‍👩‍👧‍👦</span>: ${current.population}</p>
+            <p class="country__row"><span>🗺️</span>: ${current.area} sqmeters</p>
+          </div>
+        </div>
+        `;
+    tile.innerHTML = "";
+    tile.insertAdjacentHTML("afterbegin", html);
   }
 
   //render the Marker for the country
@@ -140,29 +200,6 @@ class App {
       )
       .setPopupContent(`${this.#country.name.common}`)
       .openPopup();
-  }
-
-  //adding info html to dom
-  _renderCountryInfo() {
-    const current = this.#country;
-    tile.style.opacity = 1;
-    let html = `
-        <img class="country__img" src="${current.flags.png}" />
-        <div class="country__data">
-          <h3 class="country__name">${current.name?.common}</h3>
-          <h4 class="country__region">${current.region}</h4>
-          <div class="country__data__list">
-          <p class="country__row"><span>👀</span>Acha API mile tab kardunga</p>
-            <p class="country__row"><span>📌</span>:  ${current.capital}</p>
-            <p class="country__row"><span>🗣️</span>: ${current.languages}</p>
-            <p class="country__row"><span>💰</span>: </p>
-            <p class="country__row"><span>👨‍👩‍👧‍👦</span>: ${current.population}</p>
-            <p class="country__row"><span>🗺️</span>: ${current.area} sqmeters</p>
-          </div>
-        </div>
-        `;
-    tile.innerHTML = "";
-    tile.insertAdjacentHTML("afterbegin", html);
   }
 
   //Moving the map to focus on coordinates of country
