@@ -36,17 +36,21 @@ class App {
   //Loading the Location
   _getPosition() {
     if (navigator.geolocation)
-      navigator.geolocation.getCurrentPosition(
-        this._loadMap.bind(this),
-        function () {
-          alert("Cannot load your location ;(");
-        }
-      );
+      navigator.geolocation.getCurrentPosition(this._loadMap.bind(this), () => {
+        alert("Cannot load your location ;(");
+        this._loadMap("not");
+      });
   }
 
   //Loading the Map
   _loadMap(position) {
-    const { latitude, longitude } = position.coords;
+    let latitude = 18;
+    let longitude = 73;
+    if (position !== "not") {
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+    }
+
     const coords = [latitude, longitude];
     this.#map = L.map("map").setView(coords, this.#zoomLevel);
 
@@ -55,13 +59,16 @@ class App {
       attribution:
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(this.#map);
-    this.#country = {
-      latlng: [latitude, longitude],
-      name: {
-        common: "Your Location",
-      },
-    };
-    this._renderCountryMarker();
+
+    if (position != "not") {
+      this.#country = {
+        latlng: [latitude, longitude],
+        name: {
+          common: "Your Location",
+        },
+      };
+      this._renderCountryMarker();
+    }
   }
 
   //Creating new country and ajax call
@@ -105,7 +112,6 @@ class App {
 
   //render the Marker for the country
   _renderCountryMarker() {
-
     //removing last marker if exists
     if (this.#currentMarker) this.#map.removeLayer(this.#currentMarker);
 
